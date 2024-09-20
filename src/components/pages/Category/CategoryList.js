@@ -1,265 +1,273 @@
-import React, { useState } from "react";
-import { FaEdit, FaCheck, FaTimes, FaPlus } from "react-icons/fa";
-import DatePicker from "react-datepicker";
+import React, { useState, useEffect } from "react";
+import { FaEdit, FaCheck, FaTimes, FaPlus, FaTrash } from "react-icons/fa";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Layout from "../../layouts";
+import BreadCrumb from "../../layouts/BreadCrumb";
+import api from "../../../services/api";
+import url from "../../../services/url";
+import { getAccessToken } from '../../../utils/auth';
 
 function CategoryList() {
-    const [phases, setPhases] = useState([
-        { id: 1, name: "Planning", startDate: new Date(), endDate: new Date(new Date().setDate(new Date().getDate() + 30)), status: "Not Started" },
-        { id: 2, name: "Development", startDate: new Date(new Date().setDate(new Date().getDate() + 31)), endDate: new Date(new Date().setDate(new Date().getDate() + 90)), status: "Not Started" },
-        { id: 3, name: "Testing", startDate: new Date(new Date().setDate(new Date().getDate() + 91)), endDate: new Date(new Date().setDate(new Date().getDate() + 120)), status: "Not Started" },
-        { id: 4, name: "Deployment", startDate: new Date(new Date().setDate(new Date().getDate() + 121)), endDate: new Date(new Date().setDate(new Date().getDate() + 150)), status: "Not Started" },
-    ]);
+    const [categories, setCategories] = useState([]);
+    const [editingCategory, setEditingCategory] = useState(null);
+    const [isAdding, setIsAdding] = useState(false);
 
-    const [editingPhase, setEditingPhase] = useState(null);
-    const [isAdding, setIsAdding] = useState(false); // State to control adding mode
-    const [newPhase, setNewPhase] = useState({
+    const [newCategory, setNewCategory] = useState({
         name: "",
-        startDate: new Date(),
-        endDate: new Date(),
-        status: "Not Started",
     });
 
     const [currentPage, setCurrentPage] = useState(1);
     const rowsPerPage = 2;
-    const totalPages = Math.ceil(phases.length / rowsPerPage);
 
-    const handleEdit = (phase) => {
-        setEditingPhase({ ...phase });
+    const [formErrors, setFormErrors] = useState({
+        name: "",
+    });
+
+    const validateForm = (category) => {
+        let valid = true;
+        const newErrors = {};
+        if (!category.name) {
+            newErrors.name = "Please enter a name.";
+            valid = false;
+        } else if (category.name.length < 3) {
+            newErrors.name = "Name must be at least 3 characters.";
+            valid = false;
+        } else if (category.name.length > 255) {
+            newErrors.name = "Name must be less than 255 characters.";
+            valid = false;
+        }
+
+        setFormErrors(newErrors);
+        return valid;
     };
 
-    const handleSave = () => {
-        setPhases(phases.map((phase) => (phase.id === editingPhase.id ? editingPhase : phase)));
-        setEditingPhase(null);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (editingCategory) {
+            setEditingCategory({ ...editingCategory, [name]: value });
+        } else {
+            setNewCategory({ ...newCategory, [name]: value });
+        }
+    };
+    
+    const fetchCategories = async () => {
+        try {
+            const headers = {
+                Authorization: `Bearer ${getAccessToken()}`,
+            };
+            const response = await api.get(url.CATEGORY.LIST, { headers });
+            setCategories(response.data.data);
+        } catch (error) {
+            toast.error("Failed to fetch categories");
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const categoryToSave = editingCategory || newCategory;
+        if (validateForm(categoryToSave)) {
+            try {
+                const headers = {
+                    Authorization: `Bearer ${getAccessToken()}`,
+                };
+
+                let response;
+                if (editingCategory) {
+                    response = await api.put(`${url.CATEGORY.EDIT}`, categoryToSave, { headers });
+                    setEditingCategory(null);
+                } else {
+                    response = await api.post(url.CATEGORY.CREATE, categoryToSave, { headers });
+                    setNewCategory({ name: "" });
+                }
+
+                if (response && response.data) {
+                    toast.success("Category saved successfully!");
+                    fetchCategories();  // Refresh the list
+                    setIsAdding(false);
+                }
+            } catch (error) {
+                toast.error("Failed to save category.");
+            }
+        }
+    };
+
+    const handleEdit = (category) => {
+        // Accessing the category ID here
+        console.log('Editing category with ID:', category.id);
+        setEditingCategory({ ...category });
+    };
+
+    const handleDelete = async (id) => {
+        console.log('Deleting category with ID:', id);
+        try {
+            const headers = {
+                Authorization: `Bearer ${getAccessToken()}`,
+            };
+            await api.delete(`${url.CATEGORY.DELETE}`, { headers, data: [id]   });
+            toast.success("Category deleted successfully!");
+            fetchCategories();  // Refresh the list after deletion
+        } catch (error) {
+            toast.error("Failed to delete category.");
+        }
     };
 
     const handleCancel = () => {
-        setEditingPhase(null);
-    };
-
-    const handleChange = (field, value) => {
-        setEditingPhase({ ...editingPhase, [field]: value });
-    };
-
-    const handleAddChange = (field, value) => {
-        setNewPhase({ ...newPhase, [field]: value });
-    };
-
-    const handleAddPhase = () => {
-        setPhases([...phases, { ...newPhase, id: phases.length + 1 }]);
+        setEditingCategory(null);
         setIsAdding(false);
-        setNewPhase({
-            name: "",
-            startDate: new Date(),
-            endDate: new Date(),
-            status: "Not Started",
-        });
     };
 
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);
     };
 
-    const paginatedPhases = phases.slice(
+    const paginatedCategories = categories.slice(
         (currentPage - 1) * rowsPerPage,
         currentPage * rowsPerPage
     );
+    const totalPages = Math.ceil(categories.length / rowsPerPage);
 
     return (
-        <div className="container mt-5">
-            <h1 className="mb-4">Project Timeline Table</h1>
+        <Layout>
+            <ToastContainer />
+            <div className="container mt-5">
+                <h1 className="mb-4">Category List</h1>
+                <BreadCrumb title="Category List" />
 
-            {/* Add Phase Button */}
-            <button
-                className="btn btn-success mb-4"
-                onClick={() => setIsAdding(true)}
-            >
-                <FaPlus /> Add Phase
-            </button>
+                <button
+                    className="btn btn-success mb-4"
+                    onClick={() => setIsAdding(true)}
+                >
+                    <FaPlus /> Add Category
+                </button>
 
-            {/* Add Phase Form */}
-            {isAdding && (
-                <div className="card mb-4">
-                    <div className="card-body">
-                        <h5>Add New Phase</h5>
-                        <div className="row">
-                            <div className="col-md-4">
-                                <label>Phase Name</label>
-                                <input
-                                    type="text"
-                                    value={newPhase.name}
-                                    onChange={(e) => handleAddChange("name", e.target.value)}
-                                    className="form-control"
-                                />
-                            </div>
-                            <div className="col-md-4">
-                                <label>Start Date</label>
-                                <DatePicker
-                                    selected={newPhase.startDate}
-                                    onChange={(date) => handleAddChange("startDate", date)}
-                                    className="form-control"
-                                    dateFormat="dd/MM/yyyy"
-                                />
-                            </div>
-                            <div className="col-md-4">
-                                <label>End Date</label>
-                                <DatePicker
-                                    selected={newPhase.endDate}
-                                    onChange={(date) => handleAddChange("endDate", date)}
-                                    className="form-control"
-                                    dateFormat="dd/MM/yyyy"
-                                />
-                            </div>
-                            <div className="col-md-4">
-                                <label>Status</label>
-                                <select
-                                    value={newPhase.status}
-                                    onChange={(e) => handleAddChange("status", e.target.value)}
-                                    className="form-select"
-                                >
-                                    <option value="Not Started">Not Started</option>
-                                    <option value="In Progress">In Progress</option>
-                                    <option value="Completed">Completed</option>
-                                </select>
-                            </div>
-                            <div className="col-md-12 mt-3">
-                                <button className="btn btn-primary me-2" onClick={handleAddPhase}>
-                                    Save Phase
-                                </button>
-                                <button
-                                    className="btn btn-secondary"
-                                    onClick={() => setIsAdding(false)}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            <div className="table-responsive">
-                <table className="table table-striped table-hover">
-                    <thead className="table-light">
-                        <tr>
-                            <th>Phase Name</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {paginatedPhases.map((phase) => (
-                            <tr key={phase.id}>
-                                <td>
-                                    {editingPhase && editingPhase.id === phase.id ? (
+                {isAdding && (
+                    <div className="card mb-4">
+                        <div className="card-body">
+                            <h5>Add New Category</h5>
+                            <form onSubmit={handleSubmit}>
+                                <div className="row">
+                                    <div className="col-md-4">
                                         <input
                                             type="text"
-                                            value={editingPhase.name}
-                                            onChange={(e) => handleChange("name", e.target.value)}
-                                            className="form-control"
+                                            name="name"
+                                            className={`form-control ${formErrors.name ? "is-invalid" : ""}`}
+                                            placeholder="Category Name"
+                                            value={newCategory.name}
+                                            onChange={handleChange}
+                                            autoFocus
                                         />
-                                    ) : (
-                                        phase.name
-                                    )}
-                                </td>
-                                <td>
-                                    {editingPhase && editingPhase.id === phase.id ? (
-                                        <DatePicker
-                                            selected={editingPhase.startDate}
-                                            onChange={(date) => handleChange("startDate", date)}
-                                            className="form-control"
-                                            dateFormat="dd/MM/yyyy"
-                                        />
-                                    ) : (
-                                        phase.startDate.toLocaleDateString("en-GB")
-                                    )}
-                                </td>
-                                <td>
-                                    {editingPhase && editingPhase.id === phase.id ? (
-                                        <DatePicker
-                                            selected={editingPhase.endDate}
-                                            onChange={(date) => handleChange("endDate", date)}
-                                            className="form-control"
-                                            dateFormat="dd/MM/yyyy"
-                                        />
-                                    ) : (
-                                        phase.endDate.toLocaleDateString("en-GB")
-                                    )}
-                                </td>
-                                <td>
-                                    {editingPhase && editingPhase.id === phase.id ? (
-                                        <select
-                                            value={editingPhase.status}
-                                            onChange={(e) => handleChange("status", e.target.value)}
-                                            className="form-select"
-                                        >
-                                            <option value="Not Started">Not Started</option>
-                                            <option value="In Progress">In Progress</option>
-                                            <option value="Completed">Completed</option>
-                                        </select>
-                                    ) : (
-                                        <span
-                                            className={`badge ${phase.status === "Completed" ? "bg-success" : phase.status === "In Progress" ? "bg-warning" : "bg-danger"}`}
-                                        >
-                                            {phase.status}
-                                        </span>
-                                    )}
-                                </td>
-                                <td>
-                                    {editingPhase && editingPhase.id === phase.id ? (
-                                        <>
-                                            <button
-                                                onClick={handleSave}
-                                                className="btn btn-success btn-sm me-2"
-                                                aria-label="Save changes"
-                                            >
-                                                <FaCheck />
-                                            </button>
-                                            <button
-                                                onClick={handleCancel}
-                                                className="btn btn-danger btn-sm"
-                                                aria-label="Cancel changes"
-                                            >
-                                                <FaTimes />
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <button
-                                            onClick={() => handleEdit(phase)}
-                                            className="btn btn-primary btn-sm"
-                                            aria-label="Edit phase"
-                                        >
-                                            <FaEdit />
+                                        {formErrors.name && <div className="invalid-feedback">{formErrors.name}</div>}
+                                    </div>
+                                    <div className="col-md-12 mt-3">
+                                        <button type="submit" className="btn btn-primary me-2">
+                                            Save Category
                                         </button>
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                                        <button
+                                            type="button"
+                                            className="btn btn-secondary"
+                                            onClick={handleCancel}
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
 
-            {/* Pagination Controls */}
-            <div className="d-flex justify-content-between align-items-center">
-                <button
-                    className="btn btn-secondary"
-                    disabled={currentPage === 1}
-                    onClick={() => handlePageChange(currentPage - 1)}
-                >
-                    Previous
-                </button>
-                <span>Page {currentPage} of {totalPages}</span>
-                <button
-                    className="btn btn-secondary"
-                    disabled={currentPage === totalPages}
-                    onClick={() => handlePageChange(currentPage + 1)}
-                >
-                    Next
-                </button>
+                <div className="table-responsive">
+                    <table className="table table-striped table-hover">
+                        <thead className="table-light">
+                            <tr>
+                                <th>Category Name</th>
+                                <th>Created By</th> {/* New Column */}
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {paginatedCategories.map((category) => (
+                                <tr key={category.id}>
+                                    <td>
+                                        {editingCategory && editingCategory.id === category.id ? (
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                value={editingCategory.name}
+                                                onChange={handleChange}
+                                                className="form-control"
+                                            />
+                                        ) : (
+                                            category.name
+                                        )}
+                                    </td>
+                                    <td>{category.createdBy}</td> {/* Display Created By */}
+                                    <td>
+                                        {editingCategory && editingCategory.id === category.id ? (
+                                            <>
+                                                <button
+                                                    onClick={handleSubmit}
+                                                    className="btn btn-success btn-sm me-2"
+                                                >
+                                                    <FaCheck />
+                                                </button>
+                                                <button
+                                                    onClick={handleCancel}
+                                                    className="btn btn-danger btn-sm"
+                                                >
+                                                    <FaTimes />
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <button
+                                                    onClick={() => handleEdit(category)}
+                                                    className="btn btn-primary btn-sm me-2"
+                                                >
+                                                    <FaEdit />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(category.id)}
+                                                    className="btn btn-danger btn-sm"
+                                                >
+                                                    <FaTrash />
+                                                </button>
+                                            </>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div className="d-flex justify-content-between align-items-center">
+                    <button
+                        className="btn btn-secondary"
+                        disabled={currentPage === 1}
+                        onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                        Previous
+                    </button>
+                    <span>Page {currentPage} of {totalPages}</span>
+                    <button
+                        className="btn btn-secondary"
+                        disabled={currentPage === totalPages}
+                        onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                        Next
+                    </button>
+                </div>
             </div>
-        </div>
+        </Layout>
     );
-};
+}
 
 export default CategoryList;

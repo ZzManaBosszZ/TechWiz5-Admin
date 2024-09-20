@@ -1,4 +1,5 @@
 import Layout from "../../layouts";
+import BreadCrumb from "../../layouts/BreadCrumb";
 
 function Home() {
 
@@ -7,9 +8,7 @@ function Home() {
             <Layout>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Dashboard</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
+                    <BreadCrumb title="Dashboard" />
                     <div class="row">
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-primary text-white mb-4">
