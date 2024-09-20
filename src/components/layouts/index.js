@@ -1,17 +1,21 @@
 
 import Footer from "./Footer";
+import Navbar from "./Navbar";
 import SideBar from "./SideBar";
 function Layout({ children }) {
     return (
-        <body class="page-body page-fade"> 
-            <SideBar />
-            <div className="content-wrapper">
-                <div className="container-full">
-                    {children}
+        <body class="sb-nav-fixed">
+            <Navbar />
+            <div id="layoutSidenav">
+                <SideBar />
+                <div id="layoutSidenav_content">
+                    <main>
+                        {children}
+                    </main>
+                    <Footer />
                 </div>
             </div>
-            <Footer />
-            </body>
+        </body>
     );
 }
 

@@ -3,216 +3,74 @@ import config from "../../config";
 
 function SideBar() {
 	return (
-		<div class="sidebar-menu">
-			<div class="sidebar-menu-inner">
-				<header class="logo-env">
-					<div class="logo"> <a href="dashboard/main/index.html"> <img src="assets/images/logo%402x.png"
-						width="120" alt /> </a> </div>
-					<div class="sidebar-collapse"> <a href="#" class="sidebar-collapse-icon"> <i
-						class="entypo-menu"></i> </a> </div>
-					<div class="sidebar-mobile-menu visible-xs"> <a href="#" class="with-animation"> <i
-						class="entypo-menu"></i> </a> </div>
-				</header>
-				<ul id="main-menu" class="main-menu">
-					<li class="has-sub"> <a href="dashboard/main/index.html"><i class="entypo-gauge"></i><span
-						class="title">Dashboard</span></a>
-					</li>
-					<li class="has-sub"> <a href="layouts/layout-api/index.html"><i class="entypo-layout"></i><span
-						class="title">Layouts</span></a>
-						<ul>
-							<li> <a href="layouts/layout-api/index.html"><span class="title">Layout API</span></a> </li>
-							<li> <a href="layouts/collapsed-sidebar/index.html"><span class="title">Collapsed
-								Sidebar</span></a> </li>
-							<li> <a href="layouts/fixed-sidebar/index.html"><span class="title">Fixed Sidebar</span></a>
-							</li>
-							<li> <a href="layouts/chat-open/index.html"><span class="title">Chat Open</span></a> </li>
-							<li> <a href="layouts/horizontal-menu-boxed/index.html"><span class="title">Horizontal Menu
-								Boxed</span></a> </li>
-							<li> <a href="layouts/horizontal-menu-fluid/index.html"><span class="title">Horizontal Menu
-								Fluid</span></a> </li>
-							<li> <a href="layouts/mixed-menus/index.html"><span class="title">Mixed Menus</span></a>
-							</li>
-							<li> <a href="layouts/right-sidebar/index.html"><span class="title">Right Sidebar</span></a>
-							</li>
-							<li> <a href="layouts/both-menus-right-sidebar/index.html"><span class="title">Both Menus
-								(Right Sidebar)</span></a> </li>
-							<li class="has-sub"> <a href="layouts/page-transition-fade/index.html"><span
-								class="title">Page Enter Transitions</span></a>
-								<ul>
-									<li> <a href="layouts/page-transition-fade/index.html"><span class="title">Fade
-										Scale</span></a> </li>
-									<li> <a href="layouts/page-transition-left-in/index.html"><span class="title">Left
-										In</span></a> </li>
-									<li> <a href="layouts/page-transition-right-in/index.html"><span class="title">Right
-										In</span></a> </li>
-									<li> <a href="layouts/page-transition-fade-only/index.html"><span class="title">Fade
-										Only</span></a> </li>
-								</ul>
-							</li>
-							<li> <a href="layouts/boxed/index.html"><span class="title">Boxed Layout</span></a> </li>
-						</ul>
-					</li>
-					<li> <a href="frontend/main/index.html" target="_blank"><i class="entypo-monitor"></i><span
-						class="title">Frontend</span></a> </li>
-					<li class="has-sub"> <a href="ui/panels/index.html"><i class="entypo-newspaper"></i><span
-						class="title">UI Elements</span></a>
-						<ul>
-							<li> <a href="ui/panels/index.html"><span class="title">Panels</span></a> </li>
-							<li> <a href="ui/tiles/index.html"><span class="title">Tiles</span></a> </li>
-							<li> <a href="forms/buttons/index.html"><span class="title">Buttons</span></a> </li>
-							<li> <a href="ui/typography/index.html"><span class="title">Typography</span></a> </li>
-							<li> <a href="ui/tabs-accordions/index.html"><span class="title">Tabs &amp;
-								Accordions</span></a> </li>
-							<li> <a href="ui/tooltips-popovers/index.html"><span class="title">Tooltips &amp;
-								Popovers</span></a> </li>
-							<li> <a href="ui/navbars/index.html"><span class="title">Navbars</span></a> </li>
-							<li> <a href="ui/breadcrumbs/index.html"><span class="title">Breadcrumbs</span></a> </li>
-							<li> <a href="ui/badges-label/s.html"><span class="title">Badges &amp; Labels</span></a>
-							</li>
-							<li> <a href="ui/progress-bars/index.html"><span class="title">Progress Bars</span></a>
-							</li>
-							<li> <a href="ui/modals/index.html"><span class="title">Modals</span></a> </li>
-							<li> <a href="ui/blockquotes/index.html"><span class="title">Blockquotes</span></a> </li>
-							<li> <a href="ui/alerts/index.html"><span class="title">Alerts</span></a> </li>
-							<li> <a href="ui/pagination/index.html"><span class="title">Pagination</span></a> </li>
-						</ul>
-					</li>
-					<li class="has-sub"> <a href="mailbox/main/index.html"><i class="entypo-mail"></i><span
-						class="title">Mailbox</span><span class="badge badge-secondary">8</span></a>
-						<ul>
-							<li> <a href="mailbox/main/index.html"><i class="entypo-inbox"></i><span
-								class="title">Inbox</span></a> </li>
-							<li> <a href="mailbox/compose/index.html"><i class="entypo-pencil"></i><span
-								class="title">Compose Message</span></a> </li>
-							<li> <a href="mailbox/message/index.html"><i class="entypo-attach"></i><span
-								class="title">View Message</span></a> </li>
-						</ul>
-					</li>
-					<li class="has-sub"> <a href="forms/main/index.html"><i class="entypo-doc-text"></i><span
-						class="title">Forms</span></a>
-						<ul>
-							<li> <a href="forms/main/index.html"><span class="title">Basic Elements</span></a> </li>
-							<li> <a href="forms/advanced/index.html"><span class="title">Advanced Plugins</span></a>
-							</li>
-							<li> <a href="forms/wizard/index.html"><span class="title">Form Wizard</span></a> </li>
-							<li> <a href="forms/validation/index.html"><span class="title">Data Validation</span></a>
-							</li>
-							<li> <a href="forms/masks/index.html"><span class="title">Input Masks</span></a> </li>
-							<li> <a href="forms/sliders/index.html"><span class="title">Sliders</span></a> </li>
-							<li> <a href="forms/file-upload/index.html"><span class="title">File Upload</span></a> </li>
-							<li> <a href="forms/wysiwyg/index.html"><span class="title">Editors</span></a> </li>
-						</ul>
-					</li>
-					<li class="has-sub"> <a href="tables/main/index.html"><i class="entypo-window"></i><span
-						class="title">Tables</span></a>
-						<ul>
-							<li> <a href="tables/main/index.html"><span class="title">Basic Tables</span></a> </li>
-							<li> <a href="tables/datatable/index.html"><span class="title">Data Tables</span></a> </li>
-						</ul>
-					</li>
-					<li class="has-sub"> <a href="extra/icons/index.html"><i class="entypo-bag"></i><span
-						class="title">Extra</span><span class="badge badge-info badge-roundless">New
-							Items</span></a>
-						<ul>
-							<li class="has-sub"> <a href="extra/icons/index.html"><span class="title">Icons</span><span
-								class="badge badge-success">3</span></a>
-								<ul>
-									<li> <a href="extra/icons-fontawesome/index.html"><span class="title">Font
-										Awesome</span></a> </li>
-									<li> <a href="extra/icons-entypo/index.html"><span class="title">Entypo</span></a>
-									</li>
-									<li> <a href="extra/icons-glyphicons/index.html"><span class="title">Glyph
-										Icons</span></a> </li>
-								</ul>
-							</li>
-							<li> <a href="extra/portlets/index.html"><span class="title">Portlets</span></a> </li>
-							<li class="has-sub"> <a href="extra/google-maps/index.html"><span
-								class="title">Maps</span></a>
-								<ul>
-									<li> <a href="extra/google-maps/index.html"><span class="title">Google
-										Maps</span></a> </li>
-									<li> <a href="extra/vector-maps/index.html"><span class="title">Vector
-										Maps</span></a> </li>
-								</ul>
-							</li>
-							<li> <a href="extra/chat-api/index.html"><span class="title">Chat API</span></a> </li>
-							<li> <a href="extra/calendar/index.html"><span class="title">Calendar</span></a> </li>
-							<li> <a href="extra/calendar-2/index.html"><span class="title">Calendar 2</span><span
-								class="badge badge-secondary badge-roundless">New</span></a> </li>
-							<li> <a href="extra/notes/index.html"><span class="title">Notes</span></a> </li>
-							<li> <a href="extra/lockscreen/index.html"><span class="title">Lockscreen</span></a> </li>
-							<li> <a href="extra/login/index.html"><span class="title">Login</span></a> </li>
-							<li> <a href="extra/register/index.html"><span class="title">Register</span></a> </li>
-							<li> <a href="extra/invoice/index.html"><span class="title">Invoice</span></a> </li>
-							<li> <a href="extra/members/index.html"><span class="title">Members</span></a> </li>
-							<li class="has-sub"> <a href="extra/gallery/index.html"><span
-								class="title">Gallery</span></a>
-								<ul>
-									<li> <a href="extra/gallery/index.html"><span class="title">Albums</span></a> </li>
-									<li> <a href="extra/gallery-single/index.html"><span class="title">Single
-										Album</span></a> </li>
-								</ul>
-							</li>
-							<li> <a href="extra/profile/index.html"><span class="title">Profile</span></a> </li>
-							<li> <a href="extra/404/index.html"><span class="title">404 Page</span></a> </li>
-							<li> <a href="extra/blank-page/index.html"><span class="title">Blank Page</span></a> </li>
-							<li> <a href="extra/comments/index.html"><span class="title">Comments</span></a> </li>
-							<li> <a href="extra/timeline/index.html"><span class="title">Timeline</span></a> </li>
-							<li> <a href="extra/timeline-centered/index.html"><span class="title">Timeline
-								Centered</span></a> </li>
-							<li> <a href="extra/tocify/index.html"><span class="title">Tocify</span></a> </li>
-							<li> <a href="ui/notifications/index.html"><span class="title">Notifications</span></a>
-							</li>
-							<li> <a href="extra/new-post/index.html"><span class="title">New Post</span></a> </li>
-							<li> <a href="extra/settings/index.html"><span class="title">Settings</span></a> </li>
-							<li> <a href="extra/scrollbox/index.html"><span class="title">Scrollbox</span></a> </li>
-							<li> <a href="extra/image-crop/index.html"><span class="title">Image Crop</span></a> </li>
-							<li> <a href="extra/search/index.html"><span class="title">Search Page</span></a> </li>
-							<li> <a href="extra/language-selector/index.html"><span class="title">Language
-								Selector</span></a> </li>
-							<li> <a href="extra/nestable/index.html"><span class="title">Nestable Lists</span></a> </li>
-							<li> <a href="extra/file-tree/index.html"><span class="title">File Tree</span></a> </li>
-							<li> <a href="extra/load-progress/index.html"><span class="title">Load Progress</span></a>
-							</li>
-						</ul>
-					</li>
-					<li> <a href="extra/charts/index.html"><i class="entypo-chart-bar"></i><span
-						class="title">Charts</span></a> </li>
-					<li class="has-sub"> <a href="index.html#"><i class="entypo-flow-tree"></i><span class="title">Menu
-						Levels</span></a>
-						<ul>
-							<li> <a href="index.html#"><i class="entypo-flow-line"></i><span class="title">Menu Level
-								1.1</span></a> </li>
-							<li> <a href="index.html#"><i class="entypo-flow-line"></i><span class="title">Menu Level
-								1.2</span></a> </li>
-							<li class="has-sub"> <a href="index.html#"><i class="entypo-flow-line"></i><span
-								class="title">Menu Level 1.3</span></a>
-								<ul>
-									<li> <a href="index.html#"><i class="entypo-flow-parallel"></i><span
-										class="title">Menu Level 2.1</span></a> </li>
-									<li class="has-sub"> <a href="index.html#"><i class="entypo-flow-parallel"></i><span
-										class="title">Menu Level 2.2</span></a>
-										<ul>
-											<li class="has-sub"> <a href="index.html#"><i
-												class="entypo-flow-cascade"></i><span class="title">Menu Level
-													3.1</span></a>
-												<ul>
-													<li> <a href="index.html#"><i class="entypo-flow-branch"></i><span
-														class="title">Menu Level 4.1</span></a> </li>
-												</ul>
-											</li>
-											<li> <a href="index.html#"><i class="entypo-flow-cascade"></i><span
-												class="title">Menu Level 3.2</span></a> </li>
-										</ul>
-									</li>
-									<li> <a href="index.html#"><i class="entypo-flow-parallel"></i><span
-										class="title">Menu Level 2.3</span></a> </li>
-								</ul>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
+		<div id="layoutSidenav_nav">
+			<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+				<div class="sb-sidenav-menu">
+					<div class="nav">
+						<div class="sb-sidenav-menu-heading">Core</div>
+						<a class="nav-link" href="index.html">
+							<div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+							Dashboard
+						</a>
+						<div class="sb-sidenav-menu-heading">Interface</div>
+						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+							<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+							Layouts
+							<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+						</a>
+						<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+							<nav class="sb-sidenav-menu-nested nav">
+								<a class="nav-link" href="layout-static.html">Static Navigation</a>
+								<a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+							</nav>
+						</div>
+						<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+							<div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+							Pages
+							<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+						</a>
+						<div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+							<nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+									Authentication
+									<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+								</a>
+								<div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+									<nav class="sb-sidenav-menu-nested nav">
+										<a class="nav-link" href="login.html">Login</a>
+										<a class="nav-link" href="register.html">Register</a>
+										<a class="nav-link" href="password.html">Forgot Password</a>
+									</nav>
+								</div>
+								<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
+									Error
+									<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+								</a>
+								<div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+									<nav class="sb-sidenav-menu-nested nav">
+										<a class="nav-link" href="401.html">401 Page</a>
+										<a class="nav-link" href="404.html">404 Page</a>
+										<a class="nav-link" href="500.html">500 Page</a>
+									</nav>
+								</div>
+							</nav>
+						</div>
+						<div class="sb-sidenav-menu-heading">Addons</div>
+						<a class="nav-link" href="charts.html">
+							<div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+							Charts
+						</a>
+						<a class="nav-link" href="tables.html">
+							<div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+							Tables
+						</a>
+					</div>
+				</div>
+				<div class="sb-sidenav-footer">
+					<div class="small">Logged in as:</div>
+					Start Bootstrap
+				</div>
+			</nav>
 		</div>
 	);
 }

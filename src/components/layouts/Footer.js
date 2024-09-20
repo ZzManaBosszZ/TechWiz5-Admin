@@ -1,17 +1,16 @@
 function Footer() {
     return (
-        <footer className="main-footer">
-            <div className="pull-right d-none d-sm-inline-block">
-                {/* <ul className="nav nav-primary nav-dotted nav-dot-separated justify-content-center justify-content-md-end">
-                    <li className="nav-item">
-                        <a className="nav-link" >FAQ</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link">Purchase Now</a>
-                    </li>
-                </ul> */}
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Copyright &copy; Holiday Planner 2024</div>
+                    <div>
+                        <a href="#">Privacy Policy</a>
+                        &middot;
+                        <a href="#">Terms &amp; Conditions</a>
+                    </div>
+                </div>
             </div>
-            &copy; 2021 <a>Multipurpose Themes</a>. All Rights Reserved.
         </footer>
     );
 }

@@ -6,7 +6,6 @@ import api from "../../../services/api";
 import url from "../../../services/url";
 
 function Login() {
-
     const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
@@ -95,98 +94,73 @@ function Login() {
             }
         }
     };
+
     return (
-        <body className="hold-transition theme-primary bg-img" style={{ backgroundImage: "url(../images/auth-bg/bg-1.jpg)" }}>
-            <div className="container h-p100">
-                <div className="row align-items-center justify-content-md-center h-p100">
-                    <div className="col-12">
-                        <div className="row justify-content-center no-gutters">
-                            <div className="col-lg-5 col-md-5 col-12">
-                                <div className="bg-white rounded30 shadow-lg">
-                                    <div className="content-top-agile p-20 pb-0">
-                                        <h2 className="text-primary">Let's Get Started</h2>
-                                        <p className="mb-0">Sign in to continue to Restran.</p>
-                                    </div>
-                                    <div className="p-40">
-                                        <form onSubmit={handleLogin}>
-                                            <div className="form-group">
-                                                <div className="input-group mb-3">
-                                                    <div className="input-group-prepend">
-                                                        <span className="input-group-text bg-transparent"><i className="ti-user"></i></span>
-                                                    </div>
-                                                    <input
-                                                        type="email"
-                                                        name="email"
-                                                        className={`form-control pl-15 bg-transparent ${formErrors.email ? "is-invalid" : ""}`}
-                                                        placeholder="Email"
-                                                        value={formData.email}
-                                                        onChange={handleChange}
-                                                        autoFocus
-                                                    />
-                                                    {formErrors.email && <div className="invalid-feedback">{formErrors.email}</div>}
-                                                </div>
-                                            </div>
-                                            <div className="form-group">
-                                                <div className="input-group mb-3">
-                                                    <div className="input-group-prepend">
-                                                        <span className="input-group-text bg-transparent">
-                                                            <i className="ti-lock"></i>
-                                                        </span>
-                                                    </div>
-                                                    <input
-                                                        type={showPassword ? "text" : "password"}
-                                                        name="password"
-                                                        className={`form-control pl-15 bg-transparent ${formErrors.password ? "is-invalid" : ""}`}
-                                                        placeholder="Password"
-                                                        value={formData.password}
-                                                        onChange={handleChange}
-                                                    />
-                                                    <div className="input-group-append">
-                                                        <span className="input-group-text bg-transparent view-password" onClick={handleTogglePassword}>
-                                                            {!showPassword ? <i className="fa fa-eye-slash"></i> : <i className="fa fa-eye"></i>}
-                                                        </span>
-                                                    </div>
-                                                    {formErrors.password && <div className="invalid-feedback">{formErrors.password}</div>}
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-6">
-                                                    <div className="checkbox">
-                                                        <input type="checkbox" id="basic_checkbox_1" />
-                                                        <label for="basic_checkbox_1">Remember Me</label>
-                                                    </div>
-                                                </div>
-
-                                                <div className="col-6">
-                                                    <div className="fog-pwd text-right">
-                                                        <Link to={config.routes.forgot_password} className="hover-warning"><i className="icon icon-locked"></i> Forgot pwd?</Link><br />
-                                                    </div>
-                                                </div>
-
-                                                <div className="col-12 text-center">
-                                                    <button type="submit" value="Login" valueSubmit="Login..." handleEvent={handleLogin} className="btn btn-danger mt-10">SIGN IN</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <div className="text-center">
-                                            <p className="mt-15 mb-0">Don't have an account? <a href="auth_register.html" className="text-warning ml-5">Sign Up</a></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="text-center">
-                                    <p className="mt-20 text-white">- Sign With -</p>
-                                    <p className="gap-items-2 mb-20">
-                                        <a className="btn btn-social-icon btn-round btn-facebook"><i className="fa fa-facebook"></i></a>
-                                        <a className="btn btn-social-icon btn-round btn-twitter"><i className="fa fa-twitter"></i></a>
-                                        <a className="btn btn-social-icon btn-round btn-instagram"><i className="fa fa-instagram"></i></a>
-                                    </p>
-                                </div>
-                            </div>
+        <div className="container">
+            <div className="row justify-content-center">
+                <div className="col-lg-5">
+                    <div className="card shadow-lg border-0 rounded-lg mt-5">
+                        <div className="card-header">
+                            <h3 className="text-center font-weight-light my-4">Login</h3>
                         </div>
+                        <div className="card-body">
+                            <form onSubmit={handleLogin}>
+                                <div className="form-floating mb-3">
+                                    <input
+                                        className="form-control"
+                                        id="inputEmail"
+                                        type="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        placeholder="name@example.com"
+                                    />
+                                    <label htmlFor="inputEmail">Email address</label>
+                                    {formErrors.email && <p className="text-danger">{formErrors.email}</p>}
+                                </div>
+                                <div className="form-floating mb-3">
+                                    <input
+                                        className="form-control"
+                                        id="inputPassword"
+                                        type={showPassword ? "text" : "password"}
+                                        name="password"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        placeholder="Password"
+                                    />
+                                    <label htmlFor="inputPassword">Password</label>
+                                    {formErrors.password && <p className="text-danger">{formErrors.password}</p>}
+                                </div>
+                                <div className="form-check mb-3">
+                                    <input
+                                        className="form-check-input"
+                                        id="inputRememberPassword"
+                                        type="checkbox"
+                                        value=""
+                                    />
+                                    <label className="form-check-label" htmlFor="inputRememberPassword">
+                                        Remember Password
+                                    </label>
+                                </div>
+                                <div className="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                    <Link className="small" to="/forgot-password">
+                                        Forgot Password?
+                                    </Link>
+                                    <button type="submit" className="btn btn-primary">
+                                        Login
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        {/* <div className="card-footer text-center py-3">
+                            <div className="small">
+                                <Link to="/register">Need an account? Sign up!</Link>
+                            </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
-        </body>
+        </div>
     );
 }
 
