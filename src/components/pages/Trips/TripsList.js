@@ -60,17 +60,14 @@ function TripList() {
             newErrors.groupSize = "Please enter a valid group size.";
             valid = false;
         }
+
+        if (!trip.categoriesId || trip.categoriesId.length === 0) {
+            newErrors.categoriesId = "Please select at least one category.";
+            valid = false;
+        }
+
         setFormErrors(newErrors);
         return valid;
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        if (editingTrip) {
-            setEditingTrip({ ...editingTrip, [name]: value });
-        } else {
-            setNewTrip({ ...newTrip, [name]: value });
-        }
     };
 
     const formatDate = (dateString) => {
@@ -81,7 +78,6 @@ function TripList() {
             day: '2-digit',
         });
     };
-
 
     const fetchTrips = async () => {
         try {
@@ -112,6 +108,15 @@ function TripList() {
         fetchCategories(); // Fetch categories on component mount
     }, []);
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (editingTrip) {
+            setEditingTrip({ ...editingTrip, [name]: value });
+        } else {
+            setNewTrip({ ...newTrip, [name]: value });
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -126,12 +131,10 @@ function TripList() {
 
                 let response;
                 if (editingTrip) {
-                    // Gửi id trong payload mà không cần trong URL
-                    response = await api.put(`${url.DESTINATION.EDIT}`, tripToSave, { headers });
-                    setEditingTrip(null); // Reset trạng thái sau khi cập nhật
+                    response = await api.put(`${url.DESTINATION.EDIT}`, tripToSave, { headers, data: [editingTrip.id] });
+                    setEditingTrip(null); // Reset after editing
                 } else {
                     response = await api.post(url.DESTINATION.CREATE, tripToSave, { headers });
-                    // Reset form thêm mới sau khi thêm thành công
                     setNewTrip({
                         tripName: "",
                         destination: "",
@@ -145,8 +148,8 @@ function TripList() {
 
                 if (response && response.data) {
                     toast.success("Trip saved successfully!");
-                    fetchTrips(); // Refresh danh sách
-                    setIsAdding(false); // Đóng form thêm
+                    fetchTrips(); // Refresh the list
+                    setIsAdding(false);
                 }
             } catch (error) {
                 toast.error("Failed to save trip.");
@@ -291,7 +294,6 @@ function TripList() {
                                                 </option>
                                             ))}
                                         </select>
-
                                         {formErrors.categoriesId && <div className="invalid-feedback">{formErrors.categoriesId}</div>}
                                     </div>
 
@@ -326,7 +328,7 @@ function TripList() {
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        
+
                         <tbody>
                             {paginatedTrips.map((trip) => (
                                 <tr key={trip.id}>
